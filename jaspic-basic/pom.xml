@@ -11,6 +11,7 @@
 
   <modules>
     <module>jaspic-basic-sam</module>
+    <module>jaspic-basic-web</module>
   </modules>
 
   <reporting>
