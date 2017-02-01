@@ -28,14 +28,14 @@ import static org.testng.Assert.assertEquals;
  *
  * @author David Guzman {@literal d.guzman at ucl.ac.uk}
  */
-public class HeaderBasicAuthModuleNGTest {
+public class HeaderBasicAuthModuleTest {
   
   private final Map<String, String> options;
   private final HeaderBasicAuthModule module = new HeaderBasicAuthModule();
   private final CallbackHandler handler = mock(CallbackHandler.class);
   private final MessagePolicy mockRequestPolicy = mock(MessagePolicy.class);
   
-  public HeaderBasicAuthModuleNGTest() {
+  public HeaderBasicAuthModuleTest() {
     options = Collections.unmodifiableMap(new HashMap());
     when(mockRequestPolicy.isMandatory()).thenReturn(false);
   }
