@@ -45,9 +45,10 @@
   <properties>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <!-- versions -->
-    <dep.arquillian.version>1.1.12.Final</dep.arquillian.version>
     <dep.javaeewebapi.version>7.0</dep.javaeewebapi.version>
+    <dep.jerseyclient.version>2.25.1</dep.jerseyclient.version>
     <plu.failsafe.version>2.19.1</plu.failsafe.version>
+    <plu.dependency.version>3.0.0</plu.dependency.version>
   </properties>
   
   <profiles>
@@ -60,7 +61,7 @@
         <dependency>
           <groupId>org.glassfish.jersey.core</groupId>
           <artifactId>jersey-client</artifactId>
-          <version>2.25.1</version>
+          <version>${dep.jerseyclient.version}</version>
           <scope>test</scope>
         </dependency>
       </dependencies>
@@ -69,7 +70,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>
-            <version>3.0.0</version>
+            <version>${plu.dependency.version}</version>
             <executions>
               <execution>
                 <id>unpack-glassfish</id>

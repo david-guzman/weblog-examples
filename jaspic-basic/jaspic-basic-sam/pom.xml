@@ -34,19 +34,25 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>3.1.0</version>
+      <version>${dep.servletapi.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.security.auth.message</groupId>
       <artifactId>javax.security.auth.message-api</artifactId>
-      <version>1.1</version>
+      <version>${dep.authmessageapi.version}</version>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>2.6.2</version>
+      <version>${dep.mockitocore.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
   
+  <properties>
+    <!-- versions -->
+    <dep.servletapi.version>3.1.0</dep.servletapi.version>
+    <dep.authmessageapi.version>1.1</dep.authmessageapi.version>
+    <dep.mockitocore.version>2.6.2</dep.mockitocore.version>
+  </properties>
 </project>
