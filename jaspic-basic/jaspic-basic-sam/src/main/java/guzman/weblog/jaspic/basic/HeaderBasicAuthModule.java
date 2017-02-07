@@ -1,6 +1,7 @@
 package guzman.weblog.jaspic.basic;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Base64;
@@ -68,24 +69,33 @@ public class HeaderBasicAuthModule implements ServerAuthModule {
           Subject serviceSubject
   ) throws AuthException {
     final HttpServletRequest req = (HttpServletRequest) messageInfo.getRequestMessage();
+    final HttpServletResponse resp = (HttpServletResponse) messageInfo.getResponseMessage();
     
     // Evaluate whether not secure connections are allowed against policy
-    if (!req.isSecure() && !allowNotSecure) {
-      return AuthStatus.SEND_FAILURE;
-    }
-    
-    if (!requestPolicy.isMandatory()) {
-
-      final String userName = readAuthenticationHeader(messageInfo, clientSubject);
-
-      if (null == userName) {
-        return AuthStatus.FAILURE;
+    try {
+      if (!req.isSecure() && !allowNotSecure) {
+        resp.sendError(HttpURLConnection.HTTP_NOT_ACCEPTABLE);
+        return AuthStatus.SEND_FAILURE;
       }
 
-      return AuthStatus.SUCCESS;
-      
-    } else {
-      return AuthStatus.SUCCESS;
+      if (!requestPolicy.isMandatory()) {
+
+        final String userName = readAuthenticationHeader(messageInfo, clientSubject);
+
+        if (null == userName) {
+          resp.sendError(HttpURLConnection.HTTP_FORBIDDEN);
+          return AuthStatus.FAILURE;
+        }
+
+        return AuthStatus.SUCCESS;
+
+      } else {
+        return AuthStatus.SUCCESS;
+      }
+    } catch (IOException ex) {
+      AuthException ae = new AuthException();
+      ae.initCause(ex);
+      throw ae;
     }
   }
 

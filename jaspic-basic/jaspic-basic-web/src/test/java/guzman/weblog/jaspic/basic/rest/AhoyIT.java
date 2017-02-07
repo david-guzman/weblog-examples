@@ -1,11 +1,13 @@
 package guzman.weblog.jaspic.basic.rest;
 
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientConfig;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertThrows;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -36,12 +38,9 @@ public class AhoyIT {
   public void tearDownMethod() throws Exception {
   }
 
-  /**
-   * Test of doGet method, of class Ahoy.
-   */
   @Test
-  public void testDoGet() {
-    System.out.println("doGet");
+  public void testDoGetValidCredentials() {
+    System.out.println("doGetValidCredentials");
     ClientConfig config = new ClientConfig();
     final Client restClient = ClientBuilder.newClient(config);
     WebTarget target = restClient.target("http://localhost:8081/jaspic-basic-web/rest");
@@ -50,6 +49,17 @@ public class AhoyIT {
             .get(String.class);
     String expResult = "method doGet invoked";
     assertEquals(result, expResult);
+  }
+  
+  @Test
+  public void testDoGetInvalidPassword() {
+    System.out.println("doGetInvalidPassword");
+    ClientConfig config = new ClientConfig();
+    final Client restClient = ClientBuilder.newClient(config);
+    WebTarget target = restClient.target("http://localhost:8081/jaspic-basic-web/rest");
+    assertThrows(ForbiddenException.class, () -> {target.request(MediaType.TEXT_PLAIN_TYPE)
+            .header("Authorization", "Basic dGVzdFVzZXI6aW52YWxpZFBhc3N3b3Jk")
+            .get(String.class);});
   }
   
 }

@@ -71,7 +71,9 @@ public class HeaderBasicAuthModuleTest {
   public void testValidateRequestSecure() throws AuthException {
     final MessageInfo messageInfo = mock(MessageInfo.class);
     final HttpServletRequest servletRequest = mock(HttpServletRequest.class);
+    final HttpServletResponse servletResponse = mock(HttpServletResponse.class);
     when(messageInfo.getRequestMessage()).thenReturn(servletRequest);
+    when(messageInfo.getResponseMessage()).thenReturn(servletResponse);
     final Subject client = new Subject();
     
     // Connections that are not secure must return SEND_FAILURE by default
@@ -82,7 +84,9 @@ public class HeaderBasicAuthModuleTest {
   public void testValidateRequestAuthHeader() throws AuthException {
     final MessageInfo messageInfo = mock(MessageInfo.class);
     final HttpServletRequest servletRequest = mock(HttpServletRequest.class);
+    final HttpServletResponse servletResponse = mock(HttpServletResponse.class);
     when(messageInfo.getRequestMessage()).thenReturn(servletRequest);
+    when(messageInfo.getResponseMessage()).thenReturn(servletResponse);
     final Subject client = new Subject();
     // Return TRUE for isSecure()
     when(servletRequest.isSecure()).thenReturn(Boolean.TRUE);
