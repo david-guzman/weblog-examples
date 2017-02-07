@@ -113,6 +113,10 @@
 	  <property value="${com.sun.aas.instanceRoot}/config/keyfile" name="file" />
           <property value="fileRealm" name="jaas-context" />
         </auth-realm>
+        <auth-realm classname="com.sun.enterprise.security.auth.realm.file.FileRealm" name="testFileRealm">
+	  <property value="${com.sun.aas.instanceRoot}/config/test-keyfile" name="file" />
+          <property value="fileRealm" name="jaas-context" />
+        </auth-realm>
         <auth-realm classname="com.sun.enterprise.security.auth.realm.certificate.CertificateRealm" name="certificate" />
         <jacc-provider policy-configuration-factory-provider="com.sun.enterprise.security.provider.PolicyConfigurationFactoryImpl" policy-provider="com.sun.enterprise.security.provider.PolicyWrapper" name="default">
           <property value="${com.sun.aas.instanceRoot}/generated/policy" name="repository" />
@@ -177,7 +181,7 @@
         <protocols>
           <protocol name="http-listener">
             <http default-virtual-server="server" max-connections="250">
-              <file-cache enabled="false"></file-cache>
+              <file-cache></file-cache>
             </http>
           </protocol>
           <protocol security-enabled="true" name="https-listener">
@@ -188,7 +192,7 @@
           </protocol>
         </protocols>
         <network-listeners>
-          <network-listener port="0" protocol="http-listener" transport="tcp" name="http-listener" thread-pool="http-thread-pool" enabled="false" />
+          <network-listener port="8181" protocol="http-listener" transport="tcp" name="http-listener" thread-pool="http-thread-pool" enabled="true" />
           <network-listener port="0" protocol="https-listener" transport="tcp" name="https-listener" thread-pool="http-thread-pool" enabled="false" />
         </network-listeners>
         <transports>

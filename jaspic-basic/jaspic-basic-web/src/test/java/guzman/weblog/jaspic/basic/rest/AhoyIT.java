@@ -2,6 +2,9 @@ package guzman.weblog.jaspic.basic.rest;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import org.glassfish.jersey.client.ClientConfig;
 import static org.testng.Assert.assertEquals;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -39,9 +42,11 @@ public class AhoyIT {
   @Test
   public void testDoGet() {
     System.out.println("doGet");
-    final Client restClient = ClientBuilder.newClient();
-    String result = restClient.target("http://localhost:8181/jaspic-basic-web/rest")
-            .request("text/plain")
+    ClientConfig config = new ClientConfig();
+    final Client restClient = ClientBuilder.newClient(config);
+    WebTarget target = restClient.target("http://localhost:8081/jaspic-basic-web/rest");
+    String result = target.request(MediaType.TEXT_PLAIN_TYPE)
+            .header("Authorization", "Basic dGVzdFVzZXI6RXFmOGVU")
             .get(String.class);
     String expResult = "method doGet invoked";
     assertEquals(result, expResult);
