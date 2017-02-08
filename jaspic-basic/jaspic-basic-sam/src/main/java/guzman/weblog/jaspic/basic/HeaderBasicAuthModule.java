@@ -84,7 +84,7 @@ public class HeaderBasicAuthModule implements ServerAuthModule {
 
         if (null == userName) {
           resp.sendError(HttpURLConnection.HTTP_FORBIDDEN);
-          return AuthStatus.FAILURE;
+          return AuthStatus.SEND_FAILURE;
         }
 
         return AuthStatus.SUCCESS;

@@ -93,7 +93,7 @@ public class HeaderBasicAuthModuleTest {
     // Token authorisation mandatory for all resources except for authentication
     when(mockRequestPolicy.isMandatory()).thenReturn(Boolean.FALSE);
     // HttpServletRequest header returns null;
-    assertEquals(module.validateRequest(messageInfo, client, null), AuthStatus.FAILURE);
+    assertEquals(module.validateRequest(messageInfo, client, null), AuthStatus.SEND_FAILURE);
   }
   
   @Test
