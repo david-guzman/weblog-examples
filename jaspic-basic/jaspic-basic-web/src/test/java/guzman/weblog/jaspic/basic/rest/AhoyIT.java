@@ -62,4 +62,14 @@ public class AhoyIT {
             .get(String.class);});
   }
   
+  @Test
+  public void testDoGetNoCredentials() {
+    System.out.println("doGetNoCredentials");
+    ClientConfig config = new ClientConfig();
+    final Client restClient = ClientBuilder.newClient(config);
+    WebTarget target = restClient.target("http://localhost:8081/jaspic-basic-web/rest");
+    assertThrows(ForbiddenException.class, () -> {target.request(MediaType.TEXT_PLAIN_TYPE)
+            .get(String.class);});
+  }
+  
 }
