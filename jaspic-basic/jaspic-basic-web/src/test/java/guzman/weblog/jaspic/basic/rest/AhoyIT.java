@@ -45,7 +45,7 @@ public class AhoyIT {
     final Client restClient = ClientBuilder.newClient(config);
     WebTarget target = restClient.target("http://localhost:8081/jaspic-basic-web/rest");
     String result = target.request(MediaType.TEXT_PLAIN_TYPE)
-            .header("Authorization", "Basic dGVzdFVzZXI6RXFmOGVU")
+            .header("Authorization", "Basic dGVzdFVzZXI6dGVzdFBhc3N3b3Jk")
             .get(String.class);
     String expResult = "method doGet invoked";
     assertEquals(result, expResult);
