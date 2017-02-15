@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package guzman.weblog.jaxrs.sse.web;
 
 import java.io.IOException;
@@ -51,16 +46,6 @@ public class SseAhoy {
           eventOutput.write(event);
           TimeUnit.SECONDS.sleep(1);
         }
-//        for (int i = 0; i < 10; i++) {
-//          TimeUnit.SECONDS.sleep(1);
-//          final OutboundEvent.Builder eventBuilder
-//                  = new OutboundEvent.Builder();
-//          eventBuilder.name("message-to-client");
-//          eventBuilder.data(String.class,
-//                  "Ahoy " + i + "!");
-//          final OutboundEvent event = eventBuilder.build();
-//          eventOutput.write(event);
-//        }
       } catch (IOException | InterruptedException e) {
         throw new RuntimeException(
                 "Error when writing the event.", e);
