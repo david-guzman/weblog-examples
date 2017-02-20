@@ -1,5 +1,6 @@
 package guzman.weblog.jarxrs.sse.web;
 
+import java.util.Iterator;
 import java.util.Scanner;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -17,7 +18,7 @@ import org.testng.annotations.Test;
 public class SeeAhoyIT {
   
   private final String patientPathway = "CHECK-IN NURSE DOCTOR FLEBOTOMIST RADIOLOGIST PHARMACIST";
-  private final Scanner pathwayScanner = new Scanner(patientPathway);
+  private final Iterator<String> pathwayScanner = new Scanner(patientPathway);
   
   public SeeAhoyIT() {
   }

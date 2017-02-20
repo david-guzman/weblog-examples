@@ -1,6 +1,7 @@
 package guzman.weblog.jaxrs.sse.web;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -21,7 +22,7 @@ import org.glassfish.jersey.media.sse.SseFeature;
 public class SseAhoy {
 
   private final String patientPathway = "CHECK-IN NURSE DOCTOR FLEBOTOMIST RADIOLOGIST PHARMACIST";
-  private final Scanner pathwayScanner = new Scanner(patientPathway);
+  private final Iterator<String> pathwayScanner = new Scanner(patientPathway);
 
   /**
    * Creates a new instance of SseAhoy
