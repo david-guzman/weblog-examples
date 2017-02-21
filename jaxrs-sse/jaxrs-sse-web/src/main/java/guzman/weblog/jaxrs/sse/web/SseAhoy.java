@@ -3,7 +3,6 @@ package guzman.weblog.jaxrs.sse.web;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,8 +49,6 @@ public class SseAhoy {
     
     Runnable eventsTask = () -> {
       try {
-        Iterator<ClinicEvent> events = eventsList.iterator();
-        
         for (ClinicEvent clinicEvent : eventsList) {
           final OutboundEvent.Builder eventBuilder
                   = new OutboundEvent.Builder();
