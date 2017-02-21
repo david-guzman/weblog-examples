@@ -1,14 +1,14 @@
 package guzman.weblog.jarxrs.sse.web;
 
-import java.util.Iterator;
-import java.util.Scanner;
+import guzman.weblog.jaxrs.sse.web.SseAhoy;
+import java.util.regex.Pattern;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import org.glassfish.jersey.media.sse.EventInput;
 import org.glassfish.jersey.media.sse.InboundEvent;
 import org.glassfish.jersey.media.sse.SseFeature;
-import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
 /**
@@ -17,9 +17,8 @@ import org.testng.annotations.Test;
  */
 public class SeeAhoyIT {
   
-  private final String patientPathway = "CHECK-IN NURSE DOCTOR FLEBOTOMIST RADIOLOGIST PHARMACIST";
-  private final Iterator<String> pathwayScanner = new Scanner(patientPathway);
-  
+  private final String messagePattern = "^Patient\\s\\d{8}$";
+   
   public SeeAhoyIT() {
   }
 
@@ -41,9 +40,9 @@ public class SeeAhoyIT {
       if (inboundEvent == null) {
         break;
       }
-      assertEquals(inboundEvent.getName(), "message-to-client");
-      assertEquals(inboundEvent.readData(String.class), "Task " + pathwayScanner.next());
-      System.out.println(inboundEvent.getName() + "; " + inboundEvent.readData(String.class));
+      assertTrue(SseAhoy.ClinicTeam.contains(inboundEvent.getName()));
+      assertTrue(Pattern.matches(messagePattern, inboundEvent.readData(String.class)));
+      System.out.println(inboundEvent.getName() + ": " + inboundEvent.readData(String.class));
     }
 
   }
