@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { AppService } from './app.service';
 
@@ -7,9 +7,20 @@ import { AppService } from './app.service';
   template: `<h1>Ahoy from {{name}}</h1>`,
   providers: [ AppService ]
 })
-export class AppComponent  { 
+export class AppComponent implements OnInit { 
   name = 'Angular and JAX-RS'; 
   
+  eventMsgs : string[] = [];
+  test : string = "";
+  
   constructor( private appService : AppService ){ }
+  
+  ngOnInit() {
+    this.getSses();
+  }
+  
+  getSses() {
+
+  }
   
 }
