@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class AppService {
 
-    private url = "http://localhost:8080/jaxrs-sse-web/webresources/sse";
+    private url = "http://localhost:8081/jaxrs-sse-web/webresources/sse";
     private eventStrings : string[] = [];
 
   private zone:NgZone;
