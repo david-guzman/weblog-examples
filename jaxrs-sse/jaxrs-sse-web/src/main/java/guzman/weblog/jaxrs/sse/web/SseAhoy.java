@@ -24,6 +24,7 @@ import org.glassfish.jersey.media.sse.SseFeature;
 public class SseAhoy {
 
   private final List<ClinicEvent> eventsList = new ArrayList<>();
+  private final String eventType = "attendance-list";
   
   /**
    * Creates a new instance of SseAhoy
@@ -36,7 +37,7 @@ public class SseAhoy {
     eventsList.add(new ClinicEvent(ClinicTeam.PHLEBOTOMIST, "Patient 97649142"));
     eventsList.add(new ClinicEvent(ClinicTeam.NURSE, "Patient 98659342"));
     eventsList.add(new ClinicEvent(ClinicTeam.CONSULTANT, "Patient 98659342"));
-    eventsList.add(new ClinicEvent(ClinicTeam.NURSE, "Patient 97649142"));
+    eventsList.add(new ClinicEvent(ClinicTeam.NURSE, "Patient 32149142"));
     eventsList.add(new ClinicEvent(ClinicTeam.RADIOLOGIST, "Patient 04703214"));
     eventsList.add(new ClinicEvent(ClinicTeam.PHLEBOTOMIST, "Patient 04703214"));
     eventsList.add(new ClinicEvent(ClinicTeam.PHLEBOTOMIST, "Patient 98659342"));
@@ -52,9 +53,9 @@ public class SseAhoy {
         for (ClinicEvent clinicEvent : eventsList) {
           final OutboundEvent.Builder eventBuilder
                   = new OutboundEvent.Builder();
-          eventBuilder.name(clinicEvent.getRole().name());
+          eventBuilder.name(eventType);
           eventBuilder.mediaType(MediaType.TEXT_PLAIN_TYPE);
-          eventBuilder.data(String.class, clinicEvent.getData());
+          eventBuilder.data(String.class, clinicEvent.getRole().name() + " : " + clinicEvent.getData());
           final OutboundEvent event = eventBuilder.build();
           eventOutput.write(event);
           TimeUnit.SECONDS.sleep(1);

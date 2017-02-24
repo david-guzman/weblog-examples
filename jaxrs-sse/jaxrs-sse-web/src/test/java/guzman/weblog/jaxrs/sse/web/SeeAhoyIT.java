@@ -7,6 +7,7 @@ import javax.ws.rs.client.WebTarget;
 import org.glassfish.jersey.media.sse.EventInput;
 import org.glassfish.jersey.media.sse.InboundEvent;
 import org.glassfish.jersey.media.sse.SseFeature;
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import org.testng.annotations.Test;
 
@@ -16,7 +17,7 @@ import org.testng.annotations.Test;
  */
 public class SeeAhoyIT {
   
-  private final String messagePattern = "^Patient\\s\\d{8}$";
+  private final String messagePattern = "^(.*)\\s:\\sPatient\\s\\d{8}$";
    
   public SeeAhoyIT() {
   }
@@ -39,7 +40,7 @@ public class SeeAhoyIT {
       if (inboundEvent == null) {
         break;
       }
-      assertTrue(SseAhoy.ClinicTeam.contains(inboundEvent.getName()));
+      assertEquals(inboundEvent.getName(), "attendance-list");
       assertTrue(Pattern.matches(messagePattern, inboundEvent.readData(String.class)));
       System.out.println(inboundEvent.getName() + ": " + inboundEvent.readData(String.class));
     }
