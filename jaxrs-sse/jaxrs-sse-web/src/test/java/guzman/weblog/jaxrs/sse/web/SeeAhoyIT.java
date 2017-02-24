@@ -1,6 +1,5 @@
-package guzman.weblog.jarxrs.sse.web;
+package guzman.weblog.jaxrs.sse.web;
 
-import guzman.weblog.jaxrs.sse.web.SseAhoy;
 import java.util.regex.Pattern;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
