@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Observer } from 'rxjs/Rx';
 import { Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/map';
@@ -19,7 +19,7 @@ export class AppService {
     subscribeToJaxRs(): Observable<string> {
         console.log('subscribing to SSE from ' + this.url);
 
-        return Observable.create((observer: any) => {
+        return Observable.create((observer: Observer<string>) => {
             let eventSource = new EventSource(this.url);
 
             eventSource.onopen = x => {
