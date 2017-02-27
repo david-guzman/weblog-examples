@@ -1,26 +1,21 @@
 interface Callback { (data: any): void; }
 
-//interface Options {
-//    capture: boolean;
-//    once: boolean;
-//    passive: boolean;
-//}
+declare enum ReadyState {CONNECTING = 0, OPEN = 1, CLOSED = 2}
 
-declare class EventSource {
+declare class EventSource extends EventTarget {
 
     constructor(url: string);
 
-    onerror: Callback;
+    onerror: (event: ErrorEvent) => any;
     onmessage: Callback;
-    onopen: Callback;
-    readonly readyState : number;
+    onopen: (event: Event) => any;
+    readonly readyState : ReadyState;
     readonly url: string;
 
-    close(): void;
+    close: () => void;
 
     // From EventTarget
     addEventListener(type: string, listener: Callback): void;
-//    addEventListener(type: string, listener: Callback, options?: Options): void;
     addEventListener(type: string, listener: Callback, useCapture?: boolean): void;
     
 }

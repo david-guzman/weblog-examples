@@ -27,7 +27,15 @@ export class AppComponent implements OnInit{
   
   getSses() {
     const sses = this.appService.subscribeToJaxRs();
-    sses.subscribe(msg => this.eventMsgs.push(msg));
+
+    sses.subscribe({
+      next: (msg: string) => {
+        this.eventMsgs.push(msg);
+      },
+      complete: () => {
+        this.eventMsgs.push('complete');
+      }
+    });
   }
   
 }
