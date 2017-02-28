@@ -9,8 +9,9 @@ export class AppService {
     subscribeToJaxRs(): Observable<string> {
         console.log('subscribing to SSE from ' + this.url);
 
+        const eventSource = new EventSource(this.url);
         return Observable.create((observer: Observer<string>) => {
-            const eventSource = new EventSource(this.url);
+            
 
             eventSource.onopen = (x: any) => {
                 console.log('connection open ' + x.timeStamp + ' - readyState = ' + eventSource.readyState);
