@@ -5,7 +5,8 @@ import { ClinicRooms } from './clinicrooms';
 
 @Component({
   selector: 'my-app',
-  templateUrl: 'app/app.component.html',
+  moduleId: module.id,
+  templateUrl: './app.component.html',
   providers: [AppService]
 })
 export class AppComponent implements OnInit {
