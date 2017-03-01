@@ -10,7 +10,7 @@ import { ClinicRooms } from './clinicrooms';
   providers: [AppService]
 })
 export class AppComponent implements OnInit {
-  name = 'Angular and JAX-RS';
+  name = 'Ahoy from Angular and JAX-RS';
 
   clinicRooms: ClinicRooms = new ClinicRooms();
 

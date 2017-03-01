@@ -43,14 +43,13 @@
 	    </goals>
 	  </execution>
 
-<!--
 	  <execution>
-            <id>karma-tests</id>
-            <goals>
+	    <id>karma-tests</id>
+	    <goals>
               <goal>karma</goal>
-            </goals>
-          </execution>
--->	  
+	    </goals>
+	  </execution>
+	  
 	</executions>
       </plugin>
     </plugins>

@@ -3,3 +3,5 @@
 /npm-debug.log
 /src/main.js*
 /src/app/*.js*
+/e2e/*.js*
+_test-output/
