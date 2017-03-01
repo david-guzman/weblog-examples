@@ -1,36 +1,10 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 import { AppComponent } from './app.component';
-
-describe('AppComponent', function () {
-  let de: DebugElement;
-  let comp: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ AppComponent ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AppComponent);
-    comp = fixture.componentInstance;
-    de = fixture.debugElement.query(By.css('h1'));
-  });
-
-  it('should create component', () => expect(comp).toBeDefined() );
-
-  it('should have expected <h1> text', () => {
-    fixture.detectChanges();
-    const h1 = de.nativeElement;
-    expect(h1.innerText).toMatch(/angular\sand\sjax-rs/i,
-      '<h1> should say something about "Angular and JAX-RS"');
-  });
-});
+import { AppService } from './app.service';
 
 describe('AppComponent', () => {
 
@@ -38,10 +12,22 @@ describe('AppComponent', () => {
   let comp: AppComponent;
   let debel: DebugElement[];
   let elem: HTMLElement;
+  let serv: AppService;
+  let spy: jasmine.Spy;
+
+  const testMsg = [
+    'NURSE : Test SSE',
+    'REGISTRAR1 : Test SSE',
+    'REGISTRAR2 : Test SSE',
+    'CONSULTANT : Test SSE',
+    'RADIOLOGIST : Test SSE',
+    'PHLEBOTOMIST : Test SSE'
+  ];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent]
+      declarations: [AppComponent],
+      providers: [AppService]
     }).compileComponents();
   }));
 
@@ -49,15 +35,38 @@ describe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     comp = fixture.componentInstance;
 
+    serv = fixture.debugElement.injector.get(AppService);
+
     debel = fixture.debugElement.queryAll(By.css('td'));
   });
 
-  it('All <td> should display Vacant on start', () => {
+  it('Should create component', () => expect(comp).toBeDefined());
+
+  it('Should display "Vacant" in all <td> fields', () => {
     fixture.detectChanges();
-    debel.forEach( deb => {
+    debel.forEach(deb => {
       elem = deb.nativeElement;
       expect(elem.textContent).toBe('Vacant');
     });
   });
+
+  it('Should call spy', () => {
+    spy = spyOn(serv, 'subscribeToJaxRs')
+      .and.returnValue(Observable.from(testMsg));
+    fixture.detectChanges();
+    expect(spy.calls.any()).toBe(true, 'subscribeToJaxRs called');
+  });
+
+  it('Should update td', fakeAsync(() => {
+    spy = spyOn(serv, 'subscribeToJaxRs')
+      .and.returnValue(Observable.from(testMsg));
+    fixture.detectChanges();
+    tick();
+    fixture.detectChanges();
+    debel.forEach(deb => {
+      elem = deb.nativeElement;
+      expect(elem.textContent).toBe('Test SSE');
+    });
+  }));
 
 });
