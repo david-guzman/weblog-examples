@@ -49,10 +49,43 @@
               <goal>karma</goal>
 	    </goals>
 	  </execution>
+
+	  <execution>
+	    <id>e2e-tests</id>
+	    <goals>
+	      <goal>npm</goal>
+	    </goals>
+	    <phase>integration-test</phase>
+	    <configuration>
+	      <arguments>run e2e</arguments>
+	    </configuration>
+	  </execution>
 	  
 	</executions>
       </plugin>
+      <plugin>
+        <groupId>org.glassfish.embedded</groupId>
+        <artifactId>maven-embedded-glassfish-plugin</artifactId>
+        <version>4.1.1</version>
+        <executions>
+          <execution>
+            <id>deploy</id>
+            <goals>
+              <goal>deploy</goal>
+            </goals>          
+          </execution>
+        </executions>
+        <configuration>
+          <port>8081</port>
+          <app>../${warfile}/target/${warfile}.war</app>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
+
+  <properties>
+    <warfile>jaxrs-sse-web</warfile>
+  </properties>
 
 </project>

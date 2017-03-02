@@ -95,7 +95,7 @@
           <execution>
             <id>deploy</id>
             <goals>
-              <goal>deploy</goal>
+	      <goal>deploy</goal>
             </goals>          
           </execution>
         </executions>

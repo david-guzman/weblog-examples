@@ -15,11 +15,11 @@ import org.testng.annotations.Test;
  *
  * @author David Guzman {@literal d.guzman at ucl.ac.uk}
  */
-public class SeeAhoyIT {
+public class SseAhoyIT {
   
   private final String messagePattern = "^(.*)\\s:\\sPatient\\s\\d{8}$";
    
-  public SeeAhoyIT() {
+  public SseAhoyIT() {
   }
 
   @Test
