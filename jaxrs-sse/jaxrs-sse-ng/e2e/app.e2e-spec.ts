@@ -13,4 +13,12 @@ describe('jaxrs-sse-ng App', () => {
     page.navigateTo();
     expect(page.getParagraphText()).toEqual(expectedMsg);
   });
+
+  it('Should display a string that matches /Patient\s\d{8}/ in each td', function() {
+    page.sleep();
+    page.getTableData().each( td => {
+      expect(td.getText()).toMatch(/Patient\s\d{8}/);
+    });
+  });
+
 });
