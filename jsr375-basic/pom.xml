@@ -1,92 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <groupId>guzman.weblog.jsr375</groupId>
-    <artifactId>jsr375-basic</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+  <groupId>guzman.weblog.jsr375</groupId>
+  <artifactId>jsr375-basic</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
 
-    <name>jsr375-basic</name>
+  <name>jsr375-basic</name>
 
-    <properties>
-        <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-    
-    <repositories>
-        <repository>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <id>bintray-snapshot</id>
-            <name>libs-snapshot</name>
-            <url>http://oss.jfrog.org/artifactory/libs-snapshot</url>
-        </repository>
-    </repositories>
-    
-    <dependencies>
+  <properties>
+    <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <!-- versions -->
+    <dep.javaeewebapi.version>7.0</dep.javaeewebapi.version>
+    <dep.jerseyclient.version>2.25.1</dep.jerseyclient.version>
+    <dep.soleria.version>1.0-b07</dep.soleria.version>
+    <dep.testng.version>6.10</dep.testng.version>
+    <plu.compiler.version>3.1</plu.compiler.version>
+    <plu.glassfish.version>4.1.1</plu.glassfish.version>
+    <plu.failsafe.version>2.19.1</plu.failsafe.version>
+    <plu.dependency.version>3.0.0</plu.dependency.version>
+    <plu.war.version>2.3</plu.war.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>bintray-snapshot</id>
+      <name>libs-snapshot</name>
+      <url>http://oss.jfrog.org/artifactory/libs-snapshot</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.glassfish.soteria</groupId>
+      <artifactId>javax.security.enterprise</artifactId>
+      <version>${dep.soleria.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <version>${dep.javaeewebapi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${dep.testng.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>jsr375-basic-web</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${plu.war.version}</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${plu.failsafe.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>glassfish-web-41</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
         <dependency>
-            <groupId>org.glassfish.soteria</groupId>
-            <artifactId>javax.security.enterprise</artifactId>
-            <version>1.0-b07</version>
+          <groupId>org.glassfish.jersey.core</groupId>
+          <artifactId>jersey-client</artifactId>
+          <version>${dep.jerseyclient.version}</version>
+          <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
+      </dependencies>
+      <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                    <compilerArguments>
-                        <endorseddirs>${endorsed.dir}</endorseddirs>
-                    </compilerArguments>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${endorsed.dir}</outputDirectory>
-                            <silent>true</silent>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>javax</groupId>
-                                    <artifactId>javaee-endorsed-api</artifactId>
-                                    <version>7.0</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+          <plugin>
+            <groupId>org.glassfish.embedded</groupId>
+            <artifactId>maven-embedded-glassfish-plugin</artifactId>
+            <version>${plu.glassfish.version}</version>
+            <configuration>
+              <app>target/${project.build.finalName}.war</app>
+              <port>8081</port>
+              <contextRoot>${project.artifactId}</contextRoot>
+              <name>${project.artifactId}</name>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-container</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-container</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
+      </build>
+    </profile>
+  </profiles>
 
 </project>
