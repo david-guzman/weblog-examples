@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+  <display-name>jsr375-basic</display-name>
+  <security-constraint>
+    <display-name>UserConstraint</display-name>
+    <web-resource-collection>
+      <web-resource-name>jsr375-basic</web-resource-name>
+      <description/>
+      <url-pattern>/jsr375-basic/rest</url-pattern>
+    </web-resource-collection>
+  </security-constraint>
+  <security-role>
+    <role-name>USER</role-name>
+  </security-role>
+</web-app>

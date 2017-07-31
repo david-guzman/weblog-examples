@@ -27,6 +27,7 @@ public class RestAuthenticationMechanism implements HttpAuthenticationMechanism 
   ) throws AuthenticationException {
 
     String header = httpServletRequest.getHeader("Authorization");
+
     final String userName = readAuthenticationHeader(header);
 
     if (!isEmpty(userName)) {
