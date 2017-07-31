@@ -1,6 +1,5 @@
 package guzman.weblog.jsr375.rest;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -16,7 +15,6 @@ public class Ahoy {
   private SecurityContext securityContext;
 
   @GET
-  @RolesAllowed("USER")
   @Produces("text/plain")
   public Response doGet() {
 
