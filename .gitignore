@@ -10,3 +10,4 @@ buildNumber.properties
 nb-configuration.xml
 .idea/
 *~
+*.iml

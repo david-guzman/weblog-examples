@@ -19,7 +19,7 @@
     <!-- versions -->
     <dep.javaeewebapi.version>7.0</dep.javaeewebapi.version>
     <dep.jerseyclient.version>2.25.1</dep.jerseyclient.version>
-    <dep.soleria.version>1.0-b10</dep.soleria.version>
+    <dep.soleria.version>1.0-b11-SNAPSHOT</dep.soleria.version>
     <dep.testng.version>6.10</dep.testng.version>
     <plu.compiler.version>3.1</plu.compiler.version>
     <plu.glassfish.version>4.1.1</plu.glassfish.version>
@@ -30,21 +30,10 @@
 
   <repositories>
     <repository>
+      <id>soteria Snapshots</id>
+      <url>https://maven.java.net/content/repositories/snapshots/</url>
       <snapshots>
         <enabled>true</enabled>
-      </snapshots>
-      <id>bintray-snapshot</id>
-      <name>libs-snapshot</name>
-      <url>http://oss.jfrog.org/artifactory/libs-snapshot</url>
-    </repository>
-    <repository>
-      <id>glassfish Promoted</id>
-      <url>https://maven.java.net/content/repositories/promoted/</url>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
       </snapshots>
     </repository>
   </repositories>
