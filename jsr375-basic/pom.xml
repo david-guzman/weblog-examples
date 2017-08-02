@@ -59,7 +59,7 @@
   </dependencies>
 
   <build>
-    <finalName>jsr375-basic-web</finalName>
+    <finalName>jsr375-basic</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -87,7 +87,7 @@
 
   <profiles>
     <profile>
-      <id>glassfish-web-41</id>
+      <id>glassfish-41</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>

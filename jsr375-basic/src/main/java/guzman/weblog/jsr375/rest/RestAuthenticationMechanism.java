@@ -1,6 +1,6 @@
 package guzman.weblog.jsr375.rest;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.security.enterprise.AuthenticationException;
 import javax.security.enterprise.AuthenticationStatus;
 import javax.security.enterprise.authentication.mechanism.http.HttpAuthenticationMechanism;
@@ -14,7 +14,7 @@ import java.util.HashSet;
 
 import static java.util.Arrays.asList;
 
-@ApplicationScoped
+@RequestScoped
 public class RestAuthenticationMechanism implements HttpAuthenticationMechanism {
 
   private static final String DEF_ENC = "UTF-8";

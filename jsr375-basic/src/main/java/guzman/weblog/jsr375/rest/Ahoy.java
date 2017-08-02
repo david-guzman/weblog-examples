@@ -12,18 +12,10 @@ import javax.security.enterprise.SecurityContext;
 @Path("/")
 public class Ahoy {
 
-  @Inject
-  private SecurityContext securityContext;
-
   @GET
   @RolesAllowed("USER")
   @Produces("text/plain")
   public Response doGet() {
-
-    if (securityContext.getCallerPrincipal() != null) {
-      return Response.ok(securityContext.getCallerPrincipal().getName()).build();
-    }
-
     return Response.ok("method doGet invoked").build();
   }
 }

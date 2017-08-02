@@ -9,7 +9,6 @@ import java.util.Set;
 
 @ApplicationPath("rest")
 @DeclareRoles({"USER"})
-@BasicAuthenticationMechanismDefinition(realmName = "file")
 public class ApplicationConfig extends Application {
 
   @Override
