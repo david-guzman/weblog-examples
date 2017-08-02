@@ -45,6 +45,11 @@
       <version>${dep.soleria.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.glassfish.soteria.test</groupId>
+      <artifactId>common</artifactId>
+      <version>${dep.soleria.version}</version>
+    </dependency>
+    <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-web-api</artifactId>
       <version>${dep.javaeewebapi.version}</version>
@@ -86,8 +91,9 @@
   </build>
 
   <profiles>
+
     <profile>
-      <id>glassfish-41</id>
+      <id>glassfish-41-embedded</id>
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
@@ -132,6 +138,110 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>glassfish-web-41</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.glassfish.jersey.core</groupId>
+          <artifactId>jersey-client</artifactId>
+          <version>${dep.jerseyclient.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <version>${plu.dependency.version}</version>
+            <executions>
+              <execution>
+                <id>unpack-glassfish</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.glassfish.main.distributions</groupId>
+                      <artifactId>web</artifactId>
+                      <version>4.1.1</version>
+                      <classifier>ips</classifier>
+                      <type>zip</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.glassfish.maven.plugin</groupId>
+            <artifactId>maven-glassfish-plugin</artifactId>
+            <version>2.1</version>
+            <configuration>
+              <glassfishDirectory>${project.build.directory}/glassfish4</glassfishDirectory>
+              <adminPassword>glassfish</adminPassword>
+              <user>admin</user>
+              <domain>
+                <name>domain1</name>
+                <httpPort>8081</httpPort>
+                <adminPort>4849</adminPort>
+                <auth>
+                  <realm>
+                    <name>testFileRealm</name>
+                    <className>com.sun.enterprise.security.auth.realm.file.FileRealm</className>
+                    <properties>
+                      <property>
+                        <name>jaas-context</name>
+                        <value>fileRealm</value>
+                      </property>
+                      <property>
+                        <name>file</name>
+                        <value>${project.basedir}/src/test/resources/glassfish-41/test-keyfile</value>
+                      </property>
+                    </properties>
+                  </realm>
+                </auth>
+              </domain>
+              <components>
+                <component>
+                  <name>${project.artifactId}</name>
+                  <artifact>target/${project.build.finalName}.war</artifact>
+                </component>
+              </components>
+              <debug>true</debug>
+              <terse>false</terse>
+              <echo>true</echo>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-container</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start-domain</goal>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-container</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop-domain</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
   </profiles>
 
 </project>

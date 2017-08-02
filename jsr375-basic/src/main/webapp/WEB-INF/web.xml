@@ -9,7 +9,4 @@
       <url-pattern>/jsr375-basic/rest</url-pattern>
     </web-resource-collection>
   </security-constraint>
-  <security-role>
-    <role-name>USER</role-name>
-  </security-role>
 </web-app>
