@@ -13,10 +13,12 @@
 			<web-resource-name>Protected user resource/url</web-resource-name>
 			<url-pattern>/rest/protectedResource/*</url-pattern>
 		</web-resource-collection>
+<!--
 		<auth-constraint>
 			<role-name>foo</role-name>
 			<role-name>USER</role-name>
 		</auth-constraint>
+-->
 	</security-constraint>
 
 </web-app>

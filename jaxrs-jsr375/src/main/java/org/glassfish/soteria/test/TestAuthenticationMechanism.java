@@ -61,6 +61,12 @@ public class TestAuthenticationMechanism implements HttpAuthenticationMechanism 
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext httpMessageContext) throws AuthenticationException {
 
+	String header = request.getHeader("Authorization");
+
+	if (notNull(header)) {
+		System.out.println("FOO " + header);
+	}
+
         String name = request.getParameter("name");
         String password = request.getParameter("password");
     	
