@@ -39,7 +39,9 @@
  */
 package org.glassfish.soteria.test;
 
+import java.nio.charset.Charset;
 import static java.util.Arrays.asList;
+import java.util.Base64;
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
 import static org.glassfish.soteria.test.Utils.notNull;
 
@@ -57,6 +59,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @ApplicationScoped
 public class TestAuthenticationMechanism implements HttpAuthenticationMechanism {
+    
+    private final String DEF_ENC = "UTF-8";
 
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext httpMessageContext) throws AuthenticationException {
@@ -64,18 +68,44 @@ public class TestAuthenticationMechanism implements HttpAuthenticationMechanism 
 	String header = request.getHeader("Authorization");
 
 	if (notNull(header)) {
-		System.out.println("FOO " + header);
+            
+            System.out.println("Obtaining credentials from header " + header);
+            
+            if (!header.startsWith("Basic ")) {
+                return httpMessageContext.responseUnauthorized();
+            }
+            
+            header = header.substring(6).trim();
+            
+            // Decode and parse the authorization header
+            byte[] headerBytes = header.getBytes(Charset.forName(DEF_ENC));
+            byte[] decBytes = Base64.getDecoder().decode(headerBytes);
+            String decoded = new String(decBytes, Charset.forName(DEF_ENC));
+
+            int colon = decoded.indexOf(':');
+            if (colon <= 0 || colon == decoded.length() - 1) {
+                return httpMessageContext.responseUnauthorized();
+            }
+            
+            String name = decoded.substring(0, colon);
+            String password = decoded.substring(colon + 1);
+            
+            if (notNull(name, password)) {
+            return httpMessageContext.notifyContainerAboutLogin(
+                validate(new UsernamePasswordCredential(name, password)));    
+            }
+		
 	}
 
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
-    	
-        if (notNull(name, password)) {
-            return httpMessageContext.notifyContainerAboutLogin(
-                validate(
-                    new UsernamePasswordCredential(name, password)));
-                
-        } 
+//        String name = request.getParameter("name");
+//        String password = request.getParameter("password");
+//    	
+//        if (notNull(name, password)) {
+//            return httpMessageContext.notifyContainerAboutLogin(
+//                validate(
+//                    new UsernamePasswordCredential(name, password)));
+//                
+//        } 
 
         return httpMessageContext.doNothing();
     }
