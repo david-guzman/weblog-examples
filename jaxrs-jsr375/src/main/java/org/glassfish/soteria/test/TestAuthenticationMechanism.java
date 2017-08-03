@@ -90,22 +90,15 @@ public class TestAuthenticationMechanism implements HttpAuthenticationMechanism 
             String name = decoded.substring(0, colon);
             String password = decoded.substring(colon + 1);
             
+            System.out.println("compare reza" + "reza".compareTo(name));
+            System.out.println("compare secret1" + "secret1".compareTo(password));
+            
             if (notNull(name, password)) {
             return httpMessageContext.notifyContainerAboutLogin(
                 validate(new UsernamePasswordCredential(name, password)));    
             }
 		
 	}
-
-//        String name = request.getParameter("name");
-//        String password = request.getParameter("password");
-//    	
-//        if (notNull(name, password)) {
-//            return httpMessageContext.notifyContainerAboutLogin(
-//                validate(
-//                    new UsernamePasswordCredential(name, password)));
-//                
-//        } 
 
         return httpMessageContext.doNothing();
     }
