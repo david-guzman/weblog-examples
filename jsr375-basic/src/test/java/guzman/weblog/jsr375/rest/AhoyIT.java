@@ -3,7 +3,7 @@ package guzman.weblog.jsr375.rest;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertThrows;
 
-import javax.ws.rs.ForbiddenException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -32,14 +32,14 @@ public class AhoyIT {
     String result = target.request(MediaType.TEXT_PLAIN_TYPE)
       .header("Authorization", "Basic dGVzdFVzZXI6dGVzdFBhc3N3b3Jk")
       .get(String.class);
-    String expResult = "method doGet invoked";
+    String expResult = "goGet: caller in role USER";
     assertEquals(result, expResult);
   }
 
   @Test
   public void testDoGetInvalidPassword() {
     System.out.println("doGetInvalidPassword");
-    assertThrows(ForbiddenException.class, () -> {target.request(MediaType.TEXT_PLAIN_TYPE)
+    assertThrows(NotAuthorizedException.class, () -> {target.request(MediaType.TEXT_PLAIN_TYPE)
       .header("Authorization", "Basic dGVzdFVzZXI6aW52YWxpZFBhc3N3b3Jk")
       .get(String.class);});
   }
@@ -47,7 +47,7 @@ public class AhoyIT {
   @Test
   public void testDoGetNoCredentials() {
     System.out.println("doGetNoCredentials");
-    assertThrows(ForbiddenException.class, () -> {target.request(MediaType.TEXT_PLAIN_TYPE)
+    assertThrows(NotAuthorizedException.class, () -> {target.request(MediaType.TEXT_PLAIN_TYPE)
       .get(String.class);});
   }
 
