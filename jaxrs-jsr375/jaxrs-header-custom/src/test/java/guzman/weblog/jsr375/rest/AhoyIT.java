@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 public class AhoyIT {
 
   private static WebTarget target;
-  private final static String TARGET_URL = "http://localhost:8081/jsr375-basic/rest";
+  private final static String TARGET_URL = "http://localhost:8081/jaxrs-header-custom/rest";
 
   public AhoyIT() {}
 
