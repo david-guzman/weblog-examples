@@ -69,8 +69,6 @@ public class TestAuthenticationMechanism implements HttpAuthenticationMechanism 
 
 	if (notNull(header)) {
             
-            System.out.println("Obtaining credentials from header " + header);
-            
             if (!header.startsWith("Basic ")) {
                 return httpMessageContext.responseUnauthorized();
             }
@@ -90,12 +88,11 @@ public class TestAuthenticationMechanism implements HttpAuthenticationMechanism 
             String name = decoded.substring(0, colon);
             String password = decoded.substring(colon + 1);
             
-            System.out.println("compare reza" + "reza".compareTo(name));
-            System.out.println("compare secret1" + "secret1".compareTo(password));
+            UsernamePasswordCredential credential = new UsernamePasswordCredential(name, password);
+            CredentialValidationResult res = validate(credential);
             
             if (notNull(name, password)) {
-            return httpMessageContext.notifyContainerAboutLogin(
-                validate(new UsernamePasswordCredential(name, password)));    
+                return httpMessageContext.notifyContainerAboutLogin(res);    
             }
 		
 	}
