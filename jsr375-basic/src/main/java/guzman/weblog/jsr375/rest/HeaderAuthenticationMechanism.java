@@ -74,7 +74,7 @@ public class HeaderAuthenticationMechanism implements HttpAuthenticationMechanis
     public CredentialValidationResult validate(UsernamePasswordCredential usernamePasswordCredential) {
 
         if (usernamePasswordCredential.compareTo("testUser", "testPassword")) {
-            return new CredentialValidationResult("testUser", new HashSet<>(asList("foo", "bar", "USER")));
+            return new CredentialValidationResult("testUser", new HashSet<>(asList("USER")));
         }
 
         return INVALID_RESULT;
