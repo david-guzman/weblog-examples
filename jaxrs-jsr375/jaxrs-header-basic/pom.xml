@@ -80,4 +80,56 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+
+    <profile>
+      <id>glassfish-41-embedded</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.glassfish.jersey.core</groupId>
+          <artifactId>jersey-client</artifactId>
+          <version>${dep.jerseyclient.version}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.glassfish.embedded</groupId>
+            <artifactId>maven-embedded-glassfish-plugin</artifactId>
+            <version>${plu.glassfish.version}</version>
+            <configuration>
+              <app>target/${project.build.finalName}.war</app>
+              <port>8081</port>
+              <contextRoot>${project.artifactId}</contextRoot>
+              <name>${project.artifactId}</name>
+            </configuration>
+            <executions>
+              <execution>
+                <id>start-container</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>stop-container</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+
 </project>
