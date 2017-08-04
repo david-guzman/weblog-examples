@@ -32,7 +32,7 @@ public class AhoyIT {
     String result = target.request(MediaType.TEXT_PLAIN_TYPE)
       .header("Authorization", "Basic dGVzdFVzZXI6dGVzdFBhc3N3b3Jk")
       .get(String.class);
-    String expResult = "goGet: caller in role USER";
+    String expResult = "doGet: caller in role USER";
     assertEquals(result, expResult);
   }
 

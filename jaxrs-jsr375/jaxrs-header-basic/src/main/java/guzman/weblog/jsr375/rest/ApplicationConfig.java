@@ -1,17 +1,26 @@
 package guzman.weblog.jsr375.rest;
 
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
+import org.glassfish.soteria.identitystores.annotation.Credentials;
+import org.glassfish.soteria.identitystores.annotation.EmbeddedIdentityStoreDefinition;
+
+import javax.annotation.security.DeclareRoles;
+import javax.enterprise.context.ApplicationScoped;
+import javax.security.enterprise.authentication.mechanism.http.BasicAuthenticationMechanismDefinition;
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
-import java.util.HashSet;
-import java.util.Set;
 
+
+@ApplicationScoped
 @ApplicationPath("rest")
-public class ApplicationConfig extends Application {
+@DeclareRoles({"USER"})
+@BasicAuthenticationMechanismDefinition(realmName = "embedded")
+@EmbeddedIdentityStoreDefinition({@Credentials(callerName = "testUser", password = "testPassword", groups = {"USER"})})
+public class ApplicationConfig extends ResourceConfig {
 
-  //@Override
-  //public Set<Class<?>> getClasses() {
-  //  Set<Class<?>> resources = new HashSet<>();
-  //  resources.add(Ahoy.class);
-  //  return resources;
-  //}
+  public ApplicationConfig() {
+    super(Ahoy.class);
+    register(RolesAllowedDynamicFeature.class);
+  }
+
 }
