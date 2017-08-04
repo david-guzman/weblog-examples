@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>guzman.weblog.jsr375</groupId>
-  <artifactId>jaxrs-header-custom</artifactId>
+  <groupId>guzman.weblog.jaxrs</groupId>
+  <artifactId>jaxrs-jsr375</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>war</packaging>
-
-  <name>jaxrs-header-custommechanism</name>
-
+  <packaging>pom</packaging>
+  
   <properties>
+    <encoding>UTF-8</encoding>
+    <java.version>1.8</java.version>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
     <!-- versions -->
     <dep.javaeewebapi.version>7.0</dep.javaeewebapi.version>
     <dep.jerseyclient.version>2.25.1</dep.jerseyclient.version>
@@ -23,8 +22,14 @@
     <dep.testng.version>6.10</dep.testng.version>
     <plu.glassfish.version>4.1.1</plu.glassfish.version>
     <plu.failsafe.version>2.19.1</plu.failsafe.version>
+    <plu.surefire.version>2.19.1</plu.surefire.version>
     <plu.war.version>2.3</plu.war.version>
   </properties>
+
+  <modules>
+    <module>jaxrs-header-custom</module>
+    <module>jaxrs-header-custom-rolesallowed</module>
+  </modules>
 
   <repositories>
     <repository>
@@ -38,15 +43,15 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.glassfish.soteria</groupId>
-      <artifactId>javax.security.enterprise</artifactId>
-      <version>${dep.soleria.version}</version>
-    </dependency>
-    <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-web-api</artifactId>
       <version>${dep.javaeewebapi.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.soteria</groupId>
+      <artifactId>javax.security.enterprise</artifactId>
+      <version>${dep.soleria.version}</version>
     </dependency>
     <dependency>
       <groupId>org.testng</groupId>
@@ -57,7 +62,15 @@
   </dependencies>
 
   <build>
-    <finalName>${project.artifactId}</finalName>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${plu.surefire.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -82,6 +95,7 @@
       </plugin>
     </plugins>
   </build>
+
 
   <profiles>
 
@@ -134,4 +148,23 @@
 
   </profiles>
 
+  
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.9</version>
+        <configuration>
+          <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+        </configuration>
+      </plugin>
+            
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>3.0.4</version>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
