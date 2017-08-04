@@ -7,7 +7,7 @@
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>jsr375-basic</web-resource-name>
-      <url-pattern>/jsr375-basic/rest</url-pattern>
+      <url-pattern>/jaxrs-header-custom/rest</url-pattern>
     </web-resource-collection>
   </security-constraint>
 </web-app>
