@@ -6,8 +6,8 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>jsr375-header-custom</web-resource-name>
-      <url-pattern>/jsr375-header-custom/rest</url-pattern>
+      <web-resource-name>jaxrs-header-custom</web-resource-name>
+      <url-pattern>/jaxrs-header-custom/rest</url-pattern>
     </web-resource-collection>
   </security-constraint>
 </web-app>

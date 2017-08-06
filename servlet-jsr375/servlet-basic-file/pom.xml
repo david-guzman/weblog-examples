@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>guzman.weblog.servlet</groupId>
+    <artifactId>servlet-jsr375</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>guzman.weblog.servlet</groupId>
+  <artifactId>servlet-basic-file</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <packaging>war</packaging>
+
+  <properties>
+<!--
+    <encoding>UTF-8</encoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
+-->
+    <dep.javaeewebapi.version>7.0</dep.javaeewebapi.version>
+    <dep.soteria.version>1.0-b11-SNAPSHOT</dep.soteria.version>
+    <dep.testng.version>6.10</dep.testng.version>
+    <plu.dependency.version>3.0.0</plu.dependency.version>
+    <plu.failsafe.version>2.19.1</plu.failsafe.version>
+    <plu.glassfish.version>4.1.1</plu.glassfish.version>
+    <plu.mavenglassfish.version>2.1</plu.mavenglassfish.version>
+    <plu.resources.version>3.0.2</plu.resources.version>
+    <plu.war.version>2.3</plu.war.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <version>${dep.javaeewebapi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.soteria</groupId>
+      <artifactId>javax.security.enterprise</artifactId>
+      <version>${dep.soteria.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>${dep.testng.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>Soteria Snapshots</id>
+      <url>https://maven.java.net/content/repositories/snapshots/</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${plu.dependency.version}</version>
+        <executions>
+          <execution>
+            <id>unpack-glassfish</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.glassfish.main.distributions</groupId>
+                  <artifactId>web</artifactId>
+                  <version>${plu.glassfish.version}</version>
+                  <classifier>ips</classifier>
+                  <type>zip</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>${plu.resources.version}</version>
+        <executions>
+          <execution>
+            <id>copy-keyfile-to-glassfish</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/glassfish4/glassfish/domains/domain1/config</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/src/test/resources</directory>
+                  <includes>
+                    <include>keyfile</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.glassfish.maven.plugin</groupId>
+        <artifactId>maven-glassfish-plugin</artifactId>
+        <version>${plu.mavenglassfish.version}</version>
+        <configuration>
+          <glassfishDirectory>${project.build.directory}/glassfish4/glassfish</glassfishDirectory>
+          <user>admin</user>
+          <passwordFile>${project.build.directory}/glassfish4/glassfish/domains/domain1/config/admin-keyfile</passwordFile>
+          <domain>
+            <name>domain1</name>
+            <httpPort>8080</httpPort>
+            <adminPort>4848</adminPort>
+          </domain>
+          <components>
+            <component>
+              <name>${project.artifactId}</name>
+              <artifact>target/${project.build.finalName}.war</artifact>
+            </component>
+          </components>
+          <debug>true</debug>
+          <terse>false</terse>
+          <echo>true</echo>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-container</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-container</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop-domain</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${plu.war.version}</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>${plu.failsafe.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
