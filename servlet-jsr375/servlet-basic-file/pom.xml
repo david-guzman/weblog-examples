@@ -11,59 +11,27 @@
 
   <groupId>guzman.weblog.servlet</groupId>
   <artifactId>servlet-basic-file</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
 
   <packaging>war</packaging>
 
+  <name>servlet-jsr375-basicmechanism-filerealm</name>
+  <description>
+    Sample web application to demonstrate use of BasicMechanism annotation (JSR 375) with file realm in Glassfish
+  </description>
+
   <properties>
-<!--
-    <encoding>UTF-8</encoding>
-    <failOnMissingWebXml>false</failOnMissingWebXml>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
--->
-    <dep.javaeewebapi.version>7.0</dep.javaeewebapi.version>
-    <dep.soteria.version>1.0-b11-SNAPSHOT</dep.soteria.version>
-    <dep.testng.version>6.10</dep.testng.version>
     <plu.dependency.version>3.0.0</plu.dependency.version>
-    <plu.failsafe.version>2.19.1</plu.failsafe.version>
     <plu.glassfish.version>4.1.1</plu.glassfish.version>
     <plu.mavenglassfish.version>2.1</plu.mavenglassfish.version>
     <plu.resources.version>3.0.2</plu.resources.version>
-    <plu.war.version>2.3</plu.war.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-web-api</artifactId>
-      <version>${dep.javaeewebapi.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>org.glassfish.soteria</groupId>
       <artifactId>javax.security.enterprise</artifactId>
-      <version>${dep.soteria.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>${dep.testng.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>Soteria Snapshots</id>
-      <url>https://maven.java.net/content/repositories/snapshots/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
 
   <build>
     <finalName>${project.artifactId}</finalName>
@@ -163,27 +131,6 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>${plu.war.version}</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>${plu.failsafe.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
 
