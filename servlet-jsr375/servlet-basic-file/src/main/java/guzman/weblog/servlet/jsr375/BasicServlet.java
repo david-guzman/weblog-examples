@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/basicServlet")
 @DeclareRoles({"USER"})
-@BasicAuthenticationMechanismDefinition(realmName = "file")
+@BasicAuthenticationMechanismDefinition(realmName = "www-authenticate-realm")
 @ServletSecurity(@HttpConstraint(rolesAllowed = "USER"))
 public class BasicServlet extends HttpServlet {
 
