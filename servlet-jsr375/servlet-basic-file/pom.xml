@@ -16,7 +16,8 @@
 
   <name>servlet-jsr375-basicmechanism-filerealm</name>
   <description>
-    Sample web application to demonstrate use of BasicMechanism annotation (JSR 375) with file realm in Glassfish
+    Sample web application to demonstrate use of BasicAuthenticationMechanismDefinition annotation (JSR 375)
+    against "file realm" in Glassfish
   </description>
 
   <properties>

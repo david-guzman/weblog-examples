@@ -13,6 +13,7 @@
 
   <modules>
     <module>servlet-basic-file</module>
+    <module>servlet-basic-ldap</module>
   </modules>
 
   <properties>

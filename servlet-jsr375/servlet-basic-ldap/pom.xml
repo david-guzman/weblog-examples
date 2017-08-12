@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>guzman.weblog.servlet</groupId>
+    <artifactId>servlet-jsr375</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>servlet-basic-ldap</artifactId>
+
+  <packaging>war</packaging>
+
+  <name>servlet-jsr375-basicmechanism-ldapidentitystore</name>
+  <description>
+    Sample web application to demonstrate use of BasicAuthenticationMechanismDefinition and LdapIdentityStoreDefinition
+    annotations (JSR 375) in a Servlet
+  </description>
+
+  <properties>
+    <plu.glassfish.version>4.1.1</plu.glassfish.version>
+    <plu.ldap.version>1.3.2</plu.ldap.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.glassfish.soteria</groupId>
+      <artifactId>javax.security.enterprise</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>com.btmatthews.maven.plugins</groupId>
+        <artifactId>ldap-maven-plugin</artifactId>
+        <version>${plu.ldap.version}</version>
+        <configuration>
+          <monitorPort>11389</monitorPort>
+          <monitorKey>ldap</monitorKey>
+          <daemon>true</daemon>
+          <serverType>unboundid</serverType>
+          <rootDn>dc=guzman,dc=me.uk</rootDn>
+          <ldapPort>10389</ldapPort>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-ldap</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+          </execution>
+          <execution>
+            <id>stop-ldap</id>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.glassfish.embedded</groupId>
+        <artifactId>maven-embedded-glassfish-plugin</artifactId>
+        <version>${plu.glassfish.version}</version>
+        <configuration>
+          <app>target/${project.build.finalName}.war</app>
+          <port>8081</port>
+          <contextRoot>${project.artifactId}</contextRoot>
+          <name>${project.artifactId}</name>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-container</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-container</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
