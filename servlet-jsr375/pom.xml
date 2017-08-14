@@ -13,6 +13,7 @@
 
   <modules>
     <module>servlet-basic-file</module>
+    <module>servlet-basic-ldap</module>
   </modules>
 
   <properties>
@@ -25,9 +26,11 @@
     <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
     <!-- versions -->
     <dep.javaeewebapi.version>7.0</dep.javaeewebapi.version>
-    <dep.soteria.version>1.0-b11-SNAPSHOT</dep.soteria.version>
+    <dep.soteria.version>1.0-b12-SNAPSHOT</dep.soteria.version>
     <dep.testng.version>6.10</dep.testng.version>
+    <plu.dependency.version>3.0.0</plu.dependency.version>
     <plu.failsafe.version>2.19.1</plu.failsafe.version>
+    <plu.mavenglassfish.version>2.1</plu.mavenglassfish.version>
     <plu.war.version>2.3</plu.war.version>
   </properties>
 
@@ -75,6 +78,20 @@
   </repositories>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${plu.dependency.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.glassfish.maven.plugin</groupId>
+          <artifactId>maven-glassfish-plugin</artifactId>
+          <version>${plu.mavenglassfish.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -1,0 +1,24 @@
+dn: ou=caller,dc=guzman,dc=me,dc=uk
+objectclass: top
+objectclass: organizationalUnit
+ou: caller
+
+dn: uid=testUser,ou=caller,dc=guzman,dc=me,dc=uk
+objectclass: top
+objectclass: uidObject
+objectclass: person
+uid: testUser
+cn: Test User
+sn: Test
+userPassword: testPassword
+
+dn: ou=group,dc=guzman,dc=me,dc=uk
+objectclass: top
+objectclass: organizationalUnit
+ou: group
+
+dn: cn=USER,ou=group,dc=guzman,dc=me,dc=uk
+objectclass: top
+objectclass: groupOfNames
+cn: USER
+member: uid=testUser,ou=caller,dc=guzman,dc=me,dc=uk
