@@ -8,8 +8,7 @@
     <artifactId>servlet-jsr375</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-
-  <groupId>guzman.weblog.servlet</groupId>
+  
   <artifactId>servlet-basic-file</artifactId>
 
   <packaging>war</packaging>
@@ -21,9 +20,7 @@
   </description>
 
   <properties>
-    <plu.dependency.version>3.0.0</plu.dependency.version>
     <plu.glassfish.version>4.1.1</plu.glassfish.version>
-    <plu.mavenglassfish.version>2.1</plu.mavenglassfish.version>
     <plu.resources.version>3.0.2</plu.resources.version>
   </properties>
 
@@ -40,7 +37,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>${plu.dependency.version}</version>
         <executions>
           <execution>
             <id>unpack-glassfish</id>
@@ -94,7 +90,6 @@
       <plugin>
         <groupId>org.glassfish.maven.plugin</groupId>
         <artifactId>maven-glassfish-plugin</artifactId>
-        <version>${plu.mavenglassfish.version}</version>
         <configuration>
           <glassfishDirectory>${project.build.directory}/glassfish4/glassfish</glassfishDirectory>
           <user>admin</user>
