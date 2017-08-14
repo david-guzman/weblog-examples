@@ -21,7 +21,7 @@
   </description>
 
   <properties>
-    <plu.glassfish.version>4.1.1</plu.glassfish.version>
+    <dep.payara.version>4.1.2.172</dep.payara.version>
     <plu.ldap.version>1.3.2</plu.ldap.version>
   </properties>
 
@@ -40,12 +40,8 @@
         <artifactId>ldap-maven-plugin</artifactId>
         <version>${plu.ldap.version}</version>
         <configuration>
-          <monitorPort>11389</monitorPort>
           <monitorKey>ldap</monitorKey>
-          <daemon>true</daemon>
-          <serverType>unboundid</serverType>
-          <rootDn>dc=guzman,dc=me.uk</rootDn>
-          <ldapPort>10389</ldapPort>
+          <monitorPort>11389</monitorPort>
         </configuration>
         <executions>
           <execution>
@@ -53,6 +49,15 @@
             <goals>
               <goal>run</goal>
             </goals>
+            <configuration>
+              <daemon>true</daemon>
+              <ldapPort>10389</ldapPort>
+              <monitorKey>ldap</monitorKey>
+              <monitorPort>11389</monitorPort>
+              <rootDn>dc=guzman,dc=me,dc=uk</rootDn>
+              <serverType>unboundid</serverType>
+              <ldifFile>${project.basedir}/src/test/resources/test.ldif</ldifFile>
+            </configuration>
             <phase>pre-integration-test</phase>
           </execution>
           <execution>
@@ -65,14 +70,51 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.glassfish.embedded</groupId>
-        <artifactId>maven-embedded-glassfish-plugin</artifactId>
-        <version>${plu.glassfish.version}</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>fish.payara.distributions</groupId>
+                  <artifactId>payara-web</artifactId>
+                  <version>${dep.payara.version}</version>
+                  <type>zip</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.glassfish.maven.plugin</groupId>
+        <artifactId>maven-glassfish-plugin</artifactId>
         <configuration>
-          <app>target/${project.build.finalName}.war</app>
-          <port>8081</port>
-          <contextRoot>${project.artifactId}</contextRoot>
-          <name>${project.artifactId}</name>
+          <glassfishDirectory>${project.build.directory}/payara41/glassfish</glassfishDirectory>
+          <user>admin</user>
+          <passwordFile>${project.build.directory}/payara41/glassfish/domains/domain1/config/admin-keyfile</passwordFile>
+          <domain>
+            <name>domain1</name>
+            <httpPort>8080</httpPort>
+            <adminPort>4848</adminPort>
+          </domain>
+          <components>
+            <component>
+              <name>${project.artifactId}</name>
+              <artifact>target/${project.build.finalName}.war</artifact>
+            </component>
+          </components>
+          <debug>true</debug>
+          <terse>false</terse>
+          <echo>true</echo>
         </configuration>
         <executions>
           <execution>
@@ -86,11 +128,12 @@
             <id>stop-container</id>
             <phase>post-integration-test</phase>
             <goals>
-              <goal>stop</goal>
+              <goal>stop-domain</goal>
             </goals>
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
 
