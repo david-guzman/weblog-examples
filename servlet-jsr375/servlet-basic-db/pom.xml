@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>servlet-jsr375</artifactId>
+    <groupId>guzman.weblog.servlet</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>servlet-basic-db</artifactId>
+
+  <packaging>war</packaging>
+
+  <name>servlet-jsr375-basicmechanism-dbidentitystore</name>
+
+  <description>
+    Sample web application to demonstrate use of BasicAuthenticationMechanismDefinition and LdapIdentityStoreDefinition
+    annotations (JSR 375) in a Servlet
+  </description>
+
+  <properties>
+    <plu.inmemdb.version>1.4.3</plu.inmemdb.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.glassfish.soteria</groupId>
+      <artifactId>javax.security.enterprise</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>com.btmatthews.maven.plugins.inmemdb</groupId>
+        <artifactId>inmemdb-maven-plugin</artifactId>
+        <version>${plu.inmemdb.version}</version>
+        <configuration>
+          <monitorKey>inmemdb</monitorKey>
+          <monitorPort>11527</monitorPort>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-db</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+              <daemon>true</daemon>
+              <type>derby</type>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
