@@ -22,6 +22,7 @@
 
   <properties>
     <dep.derby.version>10.13.1.1</dep.derby.version>
+    <plu.glassfish.version>4.1.1</plu.glassfish.version>
     <plu.inmemdb.version>1.4.3</plu.inmemdb.version>
   </properties>
 
@@ -90,10 +91,14 @@
       <plugin>
         <groupId>org.glassfish.embedded</groupId>
         <artifactId>maven-embedded-glassfish-plugin</artifactId>
-        <version>4.1.1</version>
+        <version>${plu.glassfish.version}</version>
 	<configuration>
-          <port>8080</port>
+          <ports>
+	    <http-listener>8080</http-listener>
+	    <https-listener>8181</https-listener>
+	  </ports>
           <app>target/${project.build.finalName}.war</app>
+	  <contextRoot>${project.artifactId}</contextRoot>
 	  <serverID>embedded</serverID>
         </configuration>
         <executions>
@@ -114,7 +119,8 @@
               <commands>
                 <command>create-jdbc-connection-pool --datasourceclassname org.apache.derby.jdbc.ClientDataSource --restype javax.sql.XADataSource --property portNumber=1527:password=dbPwd:user=dbUsr:serverName=localhost:databaseName=memory\:jsr375 Jsr375Pool</command>
 		<command>ping-connection-pool Jsr375Pool</command>
-		<command>create-jdbc-resource --connectionpoolid Jsr375Pool jdbc/Jsr375Pool</command>
+		<command>create-jdbc-resource --connectionpoolid Jsr375Pool jdbc/jsr375DS</command>
+		<command>list-jdbc-resources</command>
               </commands>
             </configuration>
           </execution>
