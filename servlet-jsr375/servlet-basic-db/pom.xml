@@ -21,6 +21,7 @@
   </description>
 
   <properties>
+    <dep.derby.version>10.13.1.1</dep.derby.version>
     <plu.inmemdb.version>1.4.3</plu.inmemdb.version>
   </properties>
 
@@ -29,6 +30,21 @@
       <groupId>org.glassfish.soteria</groupId>
       <artifactId>javax.security.enterprise</artifactId>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <version>${dep.derby.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derbynet</artifactId>
+      <version>${dep.derby.version}</version>
+      <scope>test</scope>
+    </dependency>
+    
   </dependencies>
 
   <build>
@@ -52,10 +68,66 @@
             <configuration>
               <daemon>true</daemon>
               <type>derby</type>
+              <database>jsr375</database>
+              <username>dbUsr</username>
+              <password>dbPwd</password>
+              <sources>
+                <script>
+                  <sourceFile>src/test/resources/create_database.sql</sourceFile>
+                </script>
+              </sources>
             </configuration>
+          </execution>
+          <execution>
+            <id>stop-db</id>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <phase>post-integration-test</phase>
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.glassfish.embedded</groupId>
+        <artifactId>maven-embedded-glassfish-plugin</artifactId>
+        <version>4.1.1</version>
+	<configuration>
+          <port>8080</port>
+          <app>target/${project.build.finalName}.war</app>
+	  <serverID>embedded</serverID>
+        </configuration>
+        <executions>
+	  <execution>
+            <id>start</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>start</goal>
+            </goals>
+          </execution>
+	  <execution>
+            <id>admin</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>admin</goal>
+            </goals>
+            <configuration>
+              <commands>
+                <command>create-jdbc-connection-pool --datasourceclassname org.apache.derby.jdbc.ClientDataSource --restype javax.sql.XADataSource --property portNumber=1527:password=dbPwd:user=dbUsr:serverName=localhost:databaseName=memory\:jsr375 Jsr375Pool</command>
+		<command>ping-connection-pool Jsr375Pool</command>
+		<command>create-jdbc-resource --connectionpoolid Jsr375Pool jdbc/Jsr375Pool</command>
+              </commands>
+            </configuration>
+          </execution>
+          <execution>
+            <id>deploy</id>
+	    <phase>pre-integration-test</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>          
+          </execution>
+        </executions>
+      </plugin>
+
     </plugins>
   </build>
 
