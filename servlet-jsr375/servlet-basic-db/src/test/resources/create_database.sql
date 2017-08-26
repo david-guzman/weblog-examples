@@ -8,6 +8,6 @@ create table caller_groups (
   group_name varchar(64)
 );
 
-insert into caller values ('testUser', '2AFDA027CD5419CA06C339CE79CEFB777AA06B4A74362058A60E4E3596FAFF3DAF9C7DC4A312025CFC69658D72DE22A2D8FF53AC7A66634111813582464482AF');
+insert into caller values ('testUser', 'PBKDF2WithHmacSHA256:2048:v94Nzm8s9uAtGCPTItnjs4+Bo+PYkfbgV7lZLg9+jnM=:HNDaNO4fB6QGHDDN+/2J5Q5UrLypuMkOvPnhb25M4IE=');
 
 insert into caller_groups values ('testUser','USER');
