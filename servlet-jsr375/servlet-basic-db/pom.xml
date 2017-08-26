@@ -22,7 +22,7 @@
 
   <properties>
     <dep.derby.version>10.13.1.1</dep.derby.version>
-    <plu.glassfish.version>4.1.1</plu.glassfish.version>
+    <dep.payara.version>4.1.2.172</dep.payara.version>
     <plu.inmemdb.version>1.4.3</plu.inmemdb.version>
   </properties>
 
@@ -31,21 +31,13 @@
       <groupId>org.glassfish.soteria</groupId>
       <artifactId>javax.security.enterprise</artifactId>
     </dependency>
-    
-    <dependency>
-      <groupId>org.apache.derby</groupId>
-      <artifactId>derby</artifactId>
-      <version>${dep.derby.version}</version>
-      <scope>test</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.apache.derby</groupId>
-      <artifactId>derbynet</artifactId>
+      <artifactId>derbyclient</artifactId>
       <version>${dep.derby.version}</version>
-      <scope>test</scope>
     </dependency>
-    
+
   </dependencies>
 
   <build>
@@ -67,11 +59,12 @@
             </goals>
             <phase>pre-integration-test</phase>
             <configuration>
-              <daemon>true</daemon>
+	      <daemon>true</daemon>
               <type>derby</type>
               <database>jsr375</database>
               <username>dbUsr</username>
               <password>dbPwd</password>
+	      <port>21527</port>
               <sources>
                 <script>
                   <sourceFile>src/test/resources/create_database.sql</sourceFile>
@@ -88,53 +81,73 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
-        <groupId>org.glassfish.embedded</groupId>
-        <artifactId>maven-embedded-glassfish-plugin</artifactId>
-        <version>${plu.glassfish.version}</version>
-	<configuration>
-          <ports>
-	    <http-listener>8080</http-listener>
-	    <https-listener>8181</https-listener>
-	  </ports>
-          <app>target/${project.build.finalName}.war</app>
-	  <contextRoot>${project.artifactId}</contextRoot>
-	  <serverID>embedded</serverID>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
         <executions>
-	  <execution>
-            <id>start</id>
-            <phase>pre-integration-test</phase>
+          <execution>
+            <id>unpack</id>
+            <phase>process-test-classes</phase>
             <goals>
-              <goal>start</goal>
-            </goals>
-          </execution>
-	  <execution>
-            <id>admin</id>
-            <phase>pre-integration-test</phase>
-            <goals>
-              <goal>admin</goal>
+              <goal>unpack</goal>
             </goals>
             <configuration>
-              <commands>
-                <command>create-jdbc-connection-pool --datasourceclassname org.apache.derby.jdbc.ClientDataSource --restype javax.sql.XADataSource --property portNumber=1527:password=dbPwd:user=dbUsr:serverName=localhost:databaseName=memory\:jsr375 Jsr375Pool</command>
-		<command>ping-connection-pool Jsr375Pool</command>
-		<command>create-jdbc-resource --connectionpoolid Jsr375Pool jdbc/jsr375DS</command>
-		<command>list-jdbc-resources</command>
-              </commands>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>fish.payara.distributions</groupId>
+                  <artifactId>payara-web</artifactId>
+                  <version>${dep.payara.version}</version>
+                  <type>zip</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
             </configuration>
           </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.glassfish.maven.plugin</groupId>
+        <artifactId>maven-glassfish-plugin</artifactId>
+        <configuration>
+          <glassfishDirectory>${project.build.directory}/payara41/glassfish</glassfishDirectory>
+          <user>admin</user>
+          <passwordFile>${project.build.directory}/payara41/glassfish/domains/domain1/config/admin-keyfile</passwordFile>
+          <domain>
+            <name>domain1</name>
+            <httpPort>8080</httpPort>
+            <adminPort>4848</adminPort>
+          </domain>
+          <components>
+            <component>
+              <name>${project.artifactId}</name>
+              <artifact>target/${project.build.finalName}.war</artifact>
+            </component>
+          </components>
+          <debug>true</debug>
+          <terse>false</terse>
+          <echo>true</echo>
+        </configuration>
+        <executions>
           <execution>
-            <id>deploy</id>
-	    <phase>pre-integration-test</phase>
+            <id>start-container</id>
+            <phase>pre-integration-test</phase>
             <goals>
               <goal>deploy</goal>
-            </goals>          
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-container</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop-domain</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
 
     </plugins>
   </build>
-
 </project>
