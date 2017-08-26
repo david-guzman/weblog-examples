@@ -1,0 +1,153 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>servlet-jsr375</artifactId>
+    <groupId>guzman.weblog.servlet</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>servlet-basic-db</artifactId>
+
+  <packaging>war</packaging>
+
+  <name>servlet-jsr375-basicmechanism-dbidentitystore</name>
+
+  <description>
+    Sample web application to demonstrate use of BasicAuthenticationMechanismDefinition and LdapIdentityStoreDefinition
+    annotations (JSR 375) in a Servlet
+  </description>
+
+  <properties>
+    <dep.derby.version>10.13.1.1</dep.derby.version>
+    <dep.payara.version>4.1.2.172</dep.payara.version>
+    <plu.inmemdb.version>1.4.3</plu.inmemdb.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.glassfish.soteria</groupId>
+      <artifactId>javax.security.enterprise</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derbyclient</artifactId>
+      <version>${dep.derby.version}</version>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>com.btmatthews.maven.plugins.inmemdb</groupId>
+        <artifactId>inmemdb-maven-plugin</artifactId>
+        <version>${plu.inmemdb.version}</version>
+        <configuration>
+          <monitorKey>inmemdb</monitorKey>
+          <monitorPort>11527</monitorPort>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-db</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>pre-integration-test</phase>
+            <configuration>
+	      <daemon>true</daemon>
+              <type>derby</type>
+              <database>jsr375</database>
+              <username>dbUsr</username>
+              <password>dbPwd</password>
+	      <port>21527</port>
+              <sources>
+                <script>
+                  <sourceFile>src/test/resources/create_database.sql</sourceFile>
+                </script>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-db</id>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+            <phase>post-integration-test</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>fish.payara.distributions</groupId>
+                  <artifactId>payara-web</artifactId>
+                  <version>${dep.payara.version}</version>
+                  <type>zip</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.glassfish.maven.plugin</groupId>
+        <artifactId>maven-glassfish-plugin</artifactId>
+        <configuration>
+          <glassfishDirectory>${project.build.directory}/payara41/glassfish</glassfishDirectory>
+          <user>admin</user>
+          <passwordFile>${project.build.directory}/payara41/glassfish/domains/domain1/config/admin-keyfile</passwordFile>
+          <domain>
+            <name>domain1</name>
+            <httpPort>8080</httpPort>
+            <adminPort>4848</adminPort>
+          </domain>
+          <components>
+            <component>
+              <name>${project.artifactId}</name>
+              <artifact>target/${project.build.finalName}.war</artifact>
+            </component>
+          </components>
+          <debug>true</debug>
+          <terse>false</terse>
+          <echo>true</echo>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-container</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>stop-container</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop-domain</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+</project>
