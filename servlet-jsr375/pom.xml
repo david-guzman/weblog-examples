@@ -27,7 +27,7 @@
     <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
     <!-- versions -->
     <dep.javaeewebapi.version>7.0</dep.javaeewebapi.version>
-    <dep.soteria.version>1.0-b14-SNAPSHOT</dep.soteria.version>
+    <dep.soteria.version>1.0-b16-SNAPSHOT</dep.soteria.version>
     <dep.testng.version>6.10</dep.testng.version>
     <plu.dependency.version>3.0.0</plu.dependency.version>
     <plu.failsafe.version>2.19.1</plu.failsafe.version>
