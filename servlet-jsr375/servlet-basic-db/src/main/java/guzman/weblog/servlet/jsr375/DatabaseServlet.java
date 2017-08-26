@@ -16,8 +16,8 @@ import java.io.IOException;
 @DeclareRoles({"USER"})
 @BasicAuthenticationMechanismDefinition(realmName = "www-authenticate-realm")
 @DatabaseIdentityStoreDefinition(
-  dataSourceLookup = "${'java:global/jsr375DS'}",
-  callerQuery = "#{'select password from caller where name = ?'}",
+  dataSourceLookup = "java:global/jsr375DS",
+  callerQuery = "select password from caller where name = ?",
   groupsQuery = "select group_name from caller_groups where caller_name = ?")
 @ServletSecurity(@HttpConstraint(rolesAllowed = "USER"))
 public class DatabaseServlet extends HttpServlet {
