@@ -8,7 +8,7 @@
     <artifactId>servlet-jsr375</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  
+
   <artifactId>servlet-basic-file</artifactId>
 
   <packaging>war</packaging>

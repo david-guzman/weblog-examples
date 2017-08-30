@@ -59,16 +59,16 @@
             </goals>
             <phase>pre-integration-test</phase>
             <configuration>
-	      <daemon>true</daemon>
+              <daemon>true</daemon>
               <type>derby</type>
               <database>jsr375</database>
               <username>dbUsr</username>
               <password>dbPwd</password>
-	      <port>21527</port>
+              <port>21527</port>
               <sources>
-                <script>
-                  <sourceFile>src/test/resources/create_database.sql</sourceFile>
-                </script>
+                <Script>
+                  <sourceFile>${project.basedir}/src/test/resources/create_database.sql</sourceFile>
+                </Script>
               </sources>
             </configuration>
           </execution>
@@ -114,7 +114,8 @@
         <configuration>
           <glassfishDirectory>${project.build.directory}/payara41/glassfish</glassfishDirectory>
           <user>admin</user>
-          <passwordFile>${project.build.directory}/payara41/glassfish/domains/domain1/config/admin-keyfile</passwordFile>
+          <passwordFile>${project.build.directory}/payara41/glassfish/domains/domain1/config/admin-keyfile
+          </passwordFile>
           <domain>
             <name>domain1</name>
             <httpPort>8080</httpPort>
